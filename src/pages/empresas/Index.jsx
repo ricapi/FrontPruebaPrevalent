@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { GET_EMPRESAS } from '../../graphql/empresas/queries'
 import { Button, Dialog, DialogContent, Icon } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
+import ButtonLoading from '../../components/ButtonLoading'
+import useFormData from '../../hooks/useFormData';
 
 
 const CreacionEmpresas = () => {
@@ -88,12 +90,42 @@ const CreacionEmpresas = () => {
     )
 };
 const Formulario = () => {
+    const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA);
+    const [listaEmpresas, setListaEmpresas] = useState({});
+    const { form, formData, updateFormData } = useFormData();
+    const { data, loading, error } = useQuery(GET_EMPRESAS);
     const [openDialog, setOpenDialog] = useState(false);
+
+    useEffect(() => {
+        console.log(data);
+        // if (data) {
+        //     const le = {};
+        //     data.Creaciones.ForEach((elemento) => {
+        //         le[elemento._id] = elemento.correo;
+        //     });
+
+        //     setListaEmpresas(le);
+        // }
+    }, [data]);
+
+    useEffect(() => {
+        console.log('data mutation', mutationData);
+    });
+    let input;
+    const submitForm = (e) => {
+        e.preventDefault();
+
+        crearEmpresa({
+            variables: { nombre: data.value, razonSocial: data.value },
+        });
+    };
+
+    if (loading) return <div>...loading</div>
 
     return (
         <div >
             <div className="p-5">
-                <form action="">
+                <form ref={form} onChange={updateFormData} onSubmit={submitForm} action="">
                     <h2 className="p-5 text-lg text-gray-900">Aprobación de empresas</h2>
                     <div className='p-5 flex flex-wrap  border border-solid border-gray-200'>
 
@@ -103,26 +135,27 @@ const Formulario = () => {
                                 <i class="fa fa-check-circle text-green-500 pr-2"></i>
                                 Aprobar Empresa</button>
                             <button type='button' className='bg-gray-200 rounded font-bold px-5 py-2 shadow-md mr-2'>
-                            <i class="fa fa-times-circle text-red-600 pr-2"></i>Rechazar Empresa</button>
+                                <i class="fa fa-times-circle text-red-600 pr-2"></i>Rechazar Empresa</button>
                         </div>
                         <div className="p-5 flex flex-wrap  border border-solid border-transparent">
                             <label className="p-3 mr-2" htmlFor="">Nombre de la empresa
-                                <input className="bg-gray-200 py-1 block" type="text" placeholder="nombre" name="" />
+                                <input className="bg-gray-200 py-1 block" type="text" placeholder="nombre" name="nombre" />
                             </label>
                             <label className="p-3 mr-2" htmlFor="">Razón social
-                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Razón social" name="" />
+                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Razón social" name="razonSocial" />
                             </label><br />
                             <label className="p-3 mr-2" htmlFor="">Tipo de identificación
-                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Tipo de identificación" name="" />
+                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Tipo de identificación" name="nit" />
                             </label>
                             <label className="p-3 mr-2" htmlFor="">Identificación
-                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Identificación" name="" />
+                                <input className="bg-gray-200 py-1 block" type="text" placeholder="Identificación" name="identificacion" />
                             </label><br />
                             <label className="p-3 mr-2" htmlFor=""># de empleados
-                                <input className="bg-gray-200 py-1 block" type="text" placeholder="# Empleados" name="" />
+                                <input className="bg-gray-200 py-1 block" type="text" placeholder="# Empleados" name="numEmpleados" />
                             </label>
                             <button onClick={() => setOpenDialog(true)} type="button" className="bg-gray-400 text-white font-bold px-3 py-2  hover:bg-gray-400 shadow-md rounded mr-2">
-                            <i class="fa fa-paperclip text-indigo-900 pr-2"></i>Ver archivos adjuntos</button>
+                                <i class="fa fa-paperclip text-indigo-900 pr-2"></i>Ver archivos adjuntos</button>
+                            <ButtonLoading text='Crear empresa' loading={false} disabled={false} />
                         </div>
                     </div>
                     <Dialog open={openDialog}>
