@@ -108,24 +108,25 @@ const Formulario = () => {
         // }
     }, [data]);
 
-    useEffect(() => {
-        console.log('data mutation', mutationData);
-    });
-    let input;
-    const submitForm = (e) => {
-        e.preventDefault();
+    // useEffect(() => {
+    //     console.log('data mutation', mutationData);
+    // });
+    // let input;
+    // const submitForm = (e) => {
+    //     e.preventDefault();
 
-        crearEmpresa({
-            variables: { nombre: data.value, razonSocial: data.value },
-        });
-    };
+    //     crearEmpresa({
+    //         variables: { nombre: data.value, razonSocial: data.value },
+    //     });
+    // };
 
-    if (loading) return <div>...loading</div>
+    // if (loading) return <div>...loading</div>
 
     return (
         <div >
             <div className="p-5">
-                <form ref={form} onChange={updateFormData} onSubmit={submitForm} action="">
+            {/* onChange={updateFormData} onSubmit={submitForm} */}
+                <form ref={form}  action="">
                     <h2 className="p-5 text-lg text-gray-900">Aprobación de empresas</h2>
                     <div className='p-5 flex flex-wrap  border border-solid border-gray-200'>
 
@@ -155,7 +156,7 @@ const Formulario = () => {
                             </label>
                             <button onClick={() => setOpenDialog(true)} type="button" className="bg-gray-400 text-white font-bold px-3 py-2  hover:bg-gray-400 shadow-md rounded mr-2">
                                 <i class="fa fa-paperclip text-indigo-900 pr-2"></i>Ver archivos adjuntos</button>
-                            <ButtonLoading text='Crear empresa' loading={false} disabled={false} />
+                            {/* <ButtonLoading text='Crear empresa' loading={false} disabled={false} /> */}
                         </div>
                     </div>
                     <Dialog open={openDialog}>
