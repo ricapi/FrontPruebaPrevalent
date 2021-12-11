@@ -123,7 +123,7 @@ const Formulario = () => {
         });
     };
 
-    if (loading) return <div>...loading</div>
+    //if (loading) return <div>...loading</div>
 
     return (
         <div >
