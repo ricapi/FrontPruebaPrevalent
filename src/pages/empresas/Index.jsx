@@ -5,7 +5,8 @@ import { Button, Dialog, DialogContent, Icon } from '@mui/material';
 import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Input from '../../components/Input';
 
 
 
@@ -27,18 +28,6 @@ const CreacionEmpresas = () => {
                 </button>
             </h2>
             <div class="max-w-sm rounded overflow-hidden shadow-lg content-center">
-                {/* <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> */}
-                {/* <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-                    <p class="text-gray-700 text-base">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.Voluptatibus quia, nulla!Maiores et perferendis eaque, exercitationem praesentium nihil.
-                    </p>
-                </div>
-                <div class="px-6 pt-4 pb-2">
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-                </div> */}
             </div>
             <div className="p-5 flex w-full sm:h-full sm:w-full xl:w-full content-center ">
                 <table className="border flex-col w-full sm:w-full sm:h-full ">
@@ -92,36 +81,46 @@ const CreacionEmpresas = () => {
     )
 };
 const Formulario = () => {
-    const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA);
-    const [listaEmpresas, setListaEmpresas] = useState({});
     const { form, formData, updateFormData } = useFormData();
-    const { data, loading, error } = useQuery(GET_EMPRESAS);
+    const { _id } = useParams();
+
+    const { 
+        data: queryData,
+        error: queryError,
+        loading: queryLoading, } = useQuery(GET_EMPRESAS, {
+            variables: { _id },
+        });
+
+
+    const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA);
+
+    const [listaEmpresas, setListaEmpresas] = useState({});
     const [openDialog, setOpenDialog] = useState(false);
 
-    useEffect(() => {
-        console.log(data);
-        if (data) {
-            const le = {};
-            data.Creaciones.forEach((elemento) => {
-                le[elemento._id] = elemento.nombre;
-            });
+    const submitForm = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        crearEmpresa({
+            // variables: { nombre: data.value, razonSocial: data.value },
+            variables: { _id, ...formData },
+        });
+    };
 
-            setListaEmpresas(le);
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     console.log(data);
+    //     if (data) {
+    //         const le = {};
+    //         data.Creaciones.forEach((elemento) => {
+    //             le[elemento._id] = elemento.nombre;
+    //         });
+    //         setListaEmpresas(le);
+    //     }
+    // }, [data]);
 
     useEffect(() => {
         console.log('data mutation', mutationData);
     });
     // let input;
-    const submitForm = (e) => {
-        e.preventDefault();
-
-        crearEmpresa({
-            // variables: { nombre: data.value, razonSocial: data.value },
-            variables: formData,
-        });
-    };
 
     //if (loading) return <div>...loading</div>
 
@@ -135,6 +134,7 @@ const Formulario = () => {
 
                         <div className='lg:grid grid-cols-1 w-full p-5 m-2'>
                             <label className='mr-2' htmlFor="">Logo</label>
+
                             <button type='button' className='bg-gray-200 rounded font-bold px-5 py-2 shadow-md m-2 w-full'>
                                 <i class="fa fa-check-circle text-green-500 pr-2"></i>
                                 Aprobar Empresa</button>
@@ -142,8 +142,14 @@ const Formulario = () => {
                                 <i class="fa fa-times-circle text-red-600 pr-2"></i>Rechazar Empresa</button>
                         </div>
                         <div className="p-5 flex-wrap lg:grid  grid-cols-2 gap-2 border border-solid border-transparent content-center w-full justify-between">
+                            <Input
+                                label='Nombre de la empresa:'
+                                type='text'
+                                name='nombre'
+                                // defaultValue={queryData.Creaciones.nombre}
+                                required={true} />
                             <label className="p-3 m-2 content-center text-center" htmlFor="">Nombre de la empresa
-                                <input className="bg-gray-200 py-1 block w-full" type="text" placeholder="nombre" name="nombre" defaultValue={data.Creaciones.nombre}/>
+                                <input className="bg-gray-200 py-1 block w-full" type="text" placeholder="nombre" name="nombre" />
                             </label>
                             <label className="p-3 m-2 text-center" htmlFor="">Razón social
                                 <input className="bg-gray-200 py-1 block w-full" type="text" placeholder="Razón social" name="razonSocial" />
@@ -162,7 +168,7 @@ const Formulario = () => {
                             <ButtonLoading text='Crear empresa' loading={false} disabled={false} />
                         </div>
                     </div>
-                    
+
                     <Dialog className="w-screen " open={openDialog}>
                         <div className='flex justify-between lg:w-full lg:h-full'>
                             <h1 className='text-black font-extrabold p-3'>Documentos cargados</h1>

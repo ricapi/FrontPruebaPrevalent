@@ -13,4 +13,7 @@ const GET_EMPRESAS = gql`
   }
 `;
 
+// const GET_EMPRESA = gql `
+// `;
+
 export { GET_EMPRESAS };
