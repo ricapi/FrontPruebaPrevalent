@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import Index from './pages/Index';
 import CreacionEmpresas from './pages/empresas/Index';
+import Formulario from './pages/empresas/Formulario';
 import './styles/styles.css';
 
 // const httpLink = createHttpLink({
@@ -11,7 +12,7 @@ import './styles/styles.css';
 // });
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'https://prueba-prevalent-ware.vercel.app/graphql',
   cache: new InMemoryCache
 })
 
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path='' element={<Index />} />
           <Route path='/empresas' element={<CreacionEmpresas />} />
+          <Route path='/empresas/Formulario:_id' element={<Formulario />} />
 
         </Routes>
       </BrowserRouter>

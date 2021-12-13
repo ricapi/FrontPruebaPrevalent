@@ -13,7 +13,17 @@ const GET_EMPRESAS = gql`
   }
 `;
 
-// const GET_EMPRESA = gql `
-// `;
+const GET_EMPRESA = gql `
+query Empresa($_id: String!) {
+  Empresa(_id: $_id) {
+    _id
+    nombre
+    razonSocial
+    nit
+    identificacion
+    numEmpleados
+  }
+}
+`;
 
-export { GET_EMPRESAS };
+export { GET_EMPRESAS, GET_EMPRESA };
