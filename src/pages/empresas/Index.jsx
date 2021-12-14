@@ -19,7 +19,7 @@ const CreacionEmpresas = () => {
     return (
         <div>
             <h2 className="p-5 text-lg font-extrabold">
-                Lista empresas
+                Listar empresas
                 <button>
                     <Link to="/">
                         <i className="fa fa-home text-green-600 px-5"></i>
