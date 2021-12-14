@@ -12,8 +12,8 @@ import './styles/styles.css';
 
 const client = new ApolloClient({
   //uri: 'https://prueba-prevalent-ware.vercel.app/graphql',
-  uri: 'https://servprev.herokuapp.com/graphql',
-  //uri: 'http://localhost:4000/graphql',
+  //uri: 'https://servprev.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
 })
 
