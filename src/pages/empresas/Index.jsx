@@ -7,7 +7,7 @@ import { Button, Dialog, DialogContent, Icon } from '@mui/material';
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
 import Input from '../../components/Input';
-import Formulario from '../empresas/Formulario'
+import Formulario from './formulario'
 
 const CreacionEmpresas = () => {
     const { data, error, loading } = useQuery(GET_EMPRESAS);
@@ -22,11 +22,11 @@ const CreacionEmpresas = () => {
                 Creación empresas
                 <button>
                     <Link to="/">
-                        <i class="fa fa-home text-green-600 px-5"></i>
+                        <i className="fa fa-home text-green-600 px-5"></i>
                     </Link>
                 </button>
             </h2>
-            <div class="max-w-sm rounded overflow-hidden shadow-lg content-center">
+            <div className="max-w-sm rounded overflow-hidden shadow-lg content-center">
             </div>
             <div className="p-5 flex w-full sm:h-full sm:w-full xl:w-full content-center ">
                 <table className="border flex-col w-full sm:w-full sm:h-full ">
@@ -41,40 +41,50 @@ const CreacionEmpresas = () => {
                     </thead>
                     <tbody className="border-gray-300">
                         {
-                            data && data.Creaciones.map((ce) => {
-                                return (
-                                    <tr key={ce._id}>
-                                        <td onClick={() => { <Formulario /> }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.nombre}</td>
-                                        <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.razonSocial}</td>
-                                        <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.nit}</td>
-                                        <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.identificacion}</td>
-                                        <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.numEmpleados}</td>
+                            data && data.Creaciones ? (
+                                <>
+                                    {
+                                        data && data.Creaciones.map((ce) => {
+                                            return (
+                                                <tr key={ce._id}>
 
-                                        <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.logo}</td>
-                                        <td>
-                                            <Link to={`/Formulario/${ce._id}`}>
-                                                <i className='fa fa-home text-yellow-600 hover:text-yellow-400 cursor-pointer' />
-                                            </Link>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.nombre}</td>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.razonSocial}</td>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.nit}</td>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.identificacion}</td>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.numEmpleados}</td>
 
-                                        </td>
+                                                    <td onClick={() => { setOpenForm(true) }} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{ce.logo}</td>
+                                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                        <Link to={`/empresas/formulario/${ce._id}`}>
+                                                            <i className=' fa fa-edit text-yellow-600 hover:text-yellow-400 text-center cursor-pointer mx-2' />
+                                                            
+                                                        </Link>
+                                                    </td>
 
 
-                                    </tr>
-                                )
-                            })
+
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </>
+                            ) : (
+                                <div>No autorizado</div>
+                            )
                         }
                     </tbody>
                 </table>
             </div>
             <div>
-                <Formulario />
+                {/* <Formulario /> */}
             </div>
             <Dialog className='sm:w-full sm:h-full lg:h-full lg:w-full' open={openForm}>
                 <div>
                     <div className='flex justify-between'>
                         <h1 className='text-black font-extrabold p-3'>Formulario</h1>
                         <button onClick={() => setOpenForm(false)} type='button' className='m-2 '>
-                            <i class="fa fa-times hover:text-red-400 "></i>
+                            <i className="fa fa-times hover:text-red-400 "></i>
                         </button>
                     </div>
                 </div>

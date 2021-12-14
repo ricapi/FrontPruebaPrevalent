@@ -14,7 +14,7 @@ const GET_EMPRESAS = gql`
 `;
 
 const GET_EMPRESA = gql `
-query Empresa($_id: String!) {
+query Empresa($_id: String) {
   Empresa(_id: $_id) {
     _id
     nombre
