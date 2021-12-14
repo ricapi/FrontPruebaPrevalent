@@ -3,7 +3,7 @@
     "builds": [
         {
 
-            "src": "./index.jsx",
+            "src": "./App.jsx",
             "use": "@vercel/node"
         }
     ],
