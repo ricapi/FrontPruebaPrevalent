@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import Index from './pages/Index';
 import CreacionEmpresas from './pages/empresas/Index';
-import Formulario from './pages/empresas/formulario';
+import Formulario from './pages/empresas/Formulario';
 import './styles/styles.css';
 
 // const httpLink = createHttpLink({
