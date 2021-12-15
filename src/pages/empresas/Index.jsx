@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {  useQuery } from '@apollo/client'
 import { GET_EMPRESAS} from '../../graphql/empresas/queries'
 import { Link, useParams } from 'react-router-dom';
-import { Button, Dialog} from '@mui/material';
-import Formulario from './formulario'
+import { Button, Dialog, DialogContent, Icon } from '@mui/material';
+import ButtonLoading from '../../components/ButtonLoading'
+import useFormData from '../../hooks/useFormData';
+import Input from '../../components/Input';
+import Formulario from '../empresas/Formulario'
+
 
 const CreacionEmpresas = () => {
     const { data, error, loading } = useQuery(GET_EMPRESAS);
@@ -54,7 +58,7 @@ const CreacionEmpresas = () => {
                                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                         <Link to={`/empresas/formulario/${ce._id}`}>
                                                             <i className=' fa fa-edit text-yellow-600 hover:text-yellow-400 text-center cursor-pointer mx-2' />
-                                                            
+
                                                         </Link>
                                                     </td>
                                                 </tr>
@@ -92,5 +96,6 @@ const CreacionEmpresas = () => {
         </div>
     )
 };
+
 
 export default CreacionEmpresas
