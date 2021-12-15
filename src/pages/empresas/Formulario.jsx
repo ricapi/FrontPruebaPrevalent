@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_EMPRESAS, GET_EMPRESA, } from '../../graphql/empresas/queries'
+import { GET_EMPRESA, } from '../../graphql/empresas/queries'
 import { Link, useParams } from 'react-router-dom';
-import { Button, Dialog, DialogContent, Icon } from '@mui/material';
-import { CREAR_EMPRESA, EDITAR_EMPRESA } from '../../graphql/empresas/mutations'
+import { Button, Dialog, DialogContent} from '@mui/material';
+import { CREAR_EMPRESA} from '../../graphql/empresas/mutations'
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
 import Input from '../../components/Input';
 
 const Formulario = () => {
-    const [userData, setUserData] = useState({});
     const { form, formData, updateFormData } = useFormData(null);
     const { _id } = useParams();
 
@@ -24,7 +23,6 @@ const Formulario = () => {
     const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA);
     const [nuevaEmpresa, { data: mutationNewData, loading: mutationNewLoading, error: mutationNewError }] = useMutation(CREAR_EMPRESA);
 
-    const [listaEmpresas, setListaEmpresas] = useState({});
     const [openDialog, setOpenDialog] = useState(false);
 
     const submitForm = async (e) => {
@@ -34,9 +32,6 @@ const Formulario = () => {
             crearEmpresa({
                 variables: { _id, ...formData},
             });
-            // nuevaEmpresa({
-            //     variables: formData,
-            // });
     };
 
     useEffect(() => {
@@ -48,7 +43,6 @@ const Formulario = () => {
     useEffect(() => {
         console.log('data mutation', mutationData);
     });
-    // let input;
 
     if (queryLoading) return <div>...loading</div>
 
@@ -57,14 +51,12 @@ const Formulario = () => {
             <h1 className='items-center font-extrabold text-gray-800'>Editar estado</h1>
 
             <div className="p-5 text-center justify-between sm:w-full lg:w-full lg:h-full lg:grid grid-cols-2 ">
-                {/* onChange={updateFormData} onSubmit={submitForm} */}
                 <form className=' sm:w-full sm:h-full lg:w-full lg:h-full' ref={form} onChange={updateFormData} onSubmit={submitForm} action="">
                     <h2 className="p-5 text-lg text-gray-900">Aprobación de empresas</h2>
                     <div className='p-5 flex flex-wrap  border border-solid border-gray-200 content-center w-full'>
 
                         <div className='lg:grid grid-cols-1 w-full p-5 m-2'>
                             <label className='mr-2' htmlFor="">Logo</label>
-
                             <button type='button' className='bg-gray-200 rounded font-bold px-5 py-2 shadow-md m-2 w-full'>
                                 <i className="fa fa-check-circle text-green-500 pr-2"></i>
                                 Aprobar Empresa</button>
@@ -76,7 +68,7 @@ const Formulario = () => {
                                 label='Nombre de la empresa:'
                                 type='text'
                                 name='nombre'
-                                //defaultValue={queryData.Empresa.nombre}
+                                defaultValue={queryData.Empresa.nombre}
                                 required={true} />
                             <label className="p-3 m-2 content-center text-center" htmlFor="">ID de la empresa
                                 <input defaultValue={queryData.Empresa._id} className="bg-gray-200 py-1 block w-full" type="text" placeholder="_id" name="_id" />

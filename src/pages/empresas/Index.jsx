@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
-import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
-import { GET_EMPRESAS, GET_EMPRESA } from '../../graphql/empresas/queries'
+import {  useQuery } from '@apollo/client'
+import { GET_EMPRESAS} from '../../graphql/empresas/queries'
 import { Link, useParams } from 'react-router-dom';
 import { Button, Dialog, DialogContent, Icon } from '@mui/material';
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
 import Input from '../../components/Input';
 import Formulario from '../empresas/Formulario'
+
 
 const CreacionEmpresas = () => {
     const { data, error, loading } = useQuery(GET_EMPRESAS);
@@ -19,7 +19,7 @@ const CreacionEmpresas = () => {
     return (
         <div>
             <h2 className="p-5 text-lg font-extrabold">
-                Creación empresas
+                Listar empresas
                 <button>
                     <Link to="/">
                         <i className="fa fa-home text-green-600 px-5"></i>
@@ -61,9 +61,6 @@ const CreacionEmpresas = () => {
 
                                                         </Link>
                                                     </td>
-
-
-
                                                 </tr>
                                             )
                                         })
@@ -99,8 +96,6 @@ const CreacionEmpresas = () => {
         </div>
     )
 };
-
-
 
 
 export default CreacionEmpresas
