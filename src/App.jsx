@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path='' element={<Index />} />
           <Route path='/empresas' element={<CreacionEmpresas />} />
-          <Route path='/empresas/formulario/:_id' element={<Formulario />} />
+          <Route path='/empresas/formulario' element={<Formulario />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
