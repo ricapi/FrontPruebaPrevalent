@@ -11,12 +11,11 @@ const Index = () => {
                     Página de inicio
                 </h1>
             </div>
+            {/* Página principal con cuatro cards, la primera funcional */}
             <div className="sm:w-full lg:grid md:grid grid-cols-2  gap-2 content-center justify-between">
 
                 <div class=" rounded overflow-hidden shadow-lg bg-gray-50  sm:text-center content-center justify-around m-2">
                     <NavLink to="/empresas">
-
-                        {/* <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> */}
                         <div class="px-6 py-4 ">
                             <div class="font-bold text-xl mb-2 text-indigo-500">Solicitudes de creación de empresas</div>
                             <i class="fa fa-industry text-blue-600"></i>

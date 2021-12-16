@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_EMPRESA, GET_EMPRESAS} from '../../graphql/empresas/queries'
+import { GET_EMPRESA, GET_EMPRESAS } from '../../graphql/empresas/queries'
 import { Link, useParams } from 'react-router-dom';
 import { Button, Dialog, DialogContent } from '@mui/material';
 import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
@@ -11,7 +11,7 @@ import useFormData from '../../hooks/useFormData';
 const Formulario = () => {
     const { form, formData, updateFormData } = useFormData(null);
     const { _id } = useParams();
-
+    //carga queries
     const {
         data: queryData,
         error: queryError,
@@ -19,12 +19,12 @@ const Formulario = () => {
             variables: { _id },
         });
 
-
+    //carga mutaciones
     const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA, { refetchQueries: [{ query: GET_EMPRESA }] });
     const [nuevaEmpresa, { data: mutationNewData, loading: mutationNewLoading, error: mutationNewError }] = useMutation(CREAR_EMPRESA);
 
     const [openDialog, setOpenDialog] = useState(false);
-
+    //método del form
     const submitForm = async (e) => {
         e.preventDefault();
         console.log(formData);
@@ -48,9 +48,19 @@ const Formulario = () => {
 
     return (
         <div>
-            <h1 className='items-center font-extrabold text-gray-800 p-5'>Editar estado</h1>
+            <div className='flex bg-gray-100'>
+
+                <h1 className='items-center font-extrabold text-gray-800 p-5'>Editar estado
+                <button>
+                    <Link className='p-5' to={`/empresas`}>
+                        <i className='fa fa-arrow-left text-red-600 '></i>
+                    </Link>
+                </button>
+                </h1>
+            </div>
 
             <div className="p-5 text-center justify-between sm:w-full lg:w-full lg:h-full xl:w-full xl:h-full lg:grid grid-cols-1 ">
+                {/* formulario con precarga de datos desde la selleción en la DB */}
                 <form className=' sm:w-full sm:h-full lg:w-full lg:h-full' ref={form} onChange={updateFormData} onSubmit={submitForm} action="">
                     <h2 className="p-5 text-lg text-gray-900 font-extrabold text-gray-700">Aprobación de empresas</h2>
                     <div className='p-5 flex flex-wrap  border border-solid border-gray-200 content-center w-full'>
@@ -64,9 +74,7 @@ const Formulario = () => {
                                 <i className="fa fa-times-circle text-red-600 pr-2"></i>Rechazar Empresa</button>
                         </div>
                         <div className="p-5 flex-wrap lg:grid  grid-cols-2 gap-2 border border-solid border-transparent content-center w-full justify-between">
-                            <label className="p-3 m-2 content-center text-center" htmlFor="">ID de la empresa
-                                <input defaultValue={queryData.Empresa._id} className="bg-gray-200 py-1 block w-full" type="text" placeholder="_id" name="_id" />
-                            </label>
+
                             <label className="p-3 m-2 content-center text-center" htmlFor="">Nombre de la empresa
                                 <input className="bg-gray-200 py-1 block w-full" type="text" placeholder="nombre" name="nombre" defaultValue={queryData.Empresa.nombre} />
                             </label>
@@ -94,6 +102,7 @@ const Formulario = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Dialog para la carga de los documentos pdfs */}
 
                     <Dialog className="w-screen " open={openDialog}>
                         <div className='flex justify-between lg:w-full lg:h-full'>

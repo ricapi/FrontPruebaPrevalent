@@ -9,24 +9,28 @@ import Formulario from '../empresas/Formulario'
 
 
 const CreacionEmpresas = () => {
+    //carga de datos
     const { data, error, loading } = useQuery(GET_EMPRESAS, { refetchQueries: [{ query: GET_EMPRESAS }], });
     const [openForm, setOpenForm] = useState(false);
-
     useEffect(() => {
         console.log('Datas server', data);
     }, [data]);
     return (
         <div>
-            <h2 className="p-5 text-lg font-extrabold">
-                Listar empresas
-                <button>
-                    <Link to="/">
-                        <i className="fa fa-home text-green-600 px-5"></i>
-                    </Link>
-                </button>
-            </h2>
+            <div className='flex bg-gray-100'>
+
+                <h2 className="p-5 text-lg font-extrabold">
+                    Listar empresas
+                    <button>
+                        <Link to="/">
+                            <i className="fa fa-home text-green-600 px-5"></i>
+                        </Link>
+                    </button>
+                </h2>
+            </div>
             <div className="max-w-sm rounded overflow-hidden shadow-lg content-center">
             </div>
+            {/* tabla de consulta de datos */}
             <div className="p-5 flex w-full sm:h-full sm:w-full xl:w-full content-center ">
                 <table className="border flex-col sm:w-full sm:h-full lg:w-full lg:h-full md:w-full md:h-full ">
                     <thead className="min-w-full leading-normal border-gray-300">
@@ -39,6 +43,7 @@ const CreacionEmpresas = () => {
                     </thead>
                     <tbody className="border-gray-300">
                         {
+                            // carga de datos en la tabla desde los registros de la base de datos
                             data && data.Creaciones ? (
                                 <>
                                     {
@@ -83,6 +88,7 @@ const CreacionEmpresas = () => {
             <div>
                 {/* <Formulario /> */}
             </div>
+            {/* dialogo para cargar el formulario  */}
             <Dialog className='sm:w-full sm:h-full lg:h-full lg:w-full' open={openForm}>
                 <div>
                     <div className='flex justify-between'>
