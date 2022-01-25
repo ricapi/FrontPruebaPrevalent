@@ -6,6 +6,7 @@ import { Button, Dialog, DialogContent } from '@mui/material';
 import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
+import { uploadFormData } from '../../utils/uploadFormData';
 
 
 const Formulario = () => {
@@ -19,6 +20,7 @@ const Formulario = () => {
             variables: { _id },
         });
 
+
     //carga mutaciones
     const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA, { refetchQueries: [{ query: GET_EMPRESA }] });
     const [nuevaEmpresa, { data: mutationNewData, loading: mutationNewLoading, error: mutationNewError }] = useMutation(CREAR_EMPRESA);
@@ -27,11 +29,15 @@ const Formulario = () => {
     //método del form
     const submitForm = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        await
-            crearEmpresa({
-                variables: { _id, ...formData },
-            });
+        console.log("antes de subir",formData);
+        const formUploaded = await uploadFormData(formData);
+        console.log("subido",formUploaded);
+
+        // await
+        //     crearEmpresa({
+        //         variables: { _id, ...formData },
+        //     });
+
     };
 
     useEffect(() => {
@@ -51,11 +57,11 @@ const Formulario = () => {
             <div className='flex bg-gray-100'>
 
                 <h1 className='items-center font-extrabold text-gray-800 p-5'>Editar estado
-                <button>
-                    <Link className='p-5' to={`/empresas`}>
-                        <i className='fa fa-arrow-left text-red-600 '></i>
-                    </Link>
-                </button>
+                    <button>
+                        <Link className='p-5' to={`/empresas`}>
+                            <i className='fa fa-arrow-left text-red-600 '></i>
+                        </Link>
+                    </button>
                 </h1>
             </div>
 
@@ -90,6 +96,8 @@ const Formulario = () => {
                             <label className="p-3 m-2 text-center" htmlFor=""># de empleados
                                 <input className="bg-gray-200 py-1 block w-full" type="number" placeholder="# Empleados" name="numEmpleados" defaultValue={queryData.Empresa.numEmpleados} />
                             </label>
+                            <label className='p-3 y-2 text-center content-center block' htmlFor="">Imágenes espacio
+                                <input label="imagen" type="file" name="imagen" id="" /> </label>
                             <button onClick={() => setOpenDialog(true)} type="button" className="bg-gray-500 text-white font-bold px-6 py-3  hover:bg-gray-400 shadow-md rounded-xl m-2">
                                 <i className="fa fa-paperclip text-indigo-900 pr-2"></i>Ver archivos adjuntos</button>
                             <ButtonLoading

@@ -9,6 +9,7 @@ const GET_EMPRESAS = gql`
       nit
       identificacion
       numEmpleados
+      imagen
     }
   }
 `;
@@ -22,6 +23,7 @@ query Empresa($_id: String) {
     nit
     identificacion
     numEmpleados
+    imagen
   }
 }
 `;
