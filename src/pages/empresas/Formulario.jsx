@@ -3,14 +3,16 @@ import { useMutation, useQuery } from '@apollo/client'
 import { GET_EMPRESA, GET_EMPRESAS } from '../../graphql/empresas/queries'
 import { Link, useParams } from 'react-router-dom';
 import { Button, Dialog, DialogContent } from '@mui/material';
-import { CREAR_EMPRESA } from '../../graphql/empresas/mutations'
+import { CARGAR_IMAGEN, CREAR_EMPRESA } from '../../graphql/empresas/mutations'
 import ButtonLoading from '../../components/ButtonLoading'
 import useFormData from '../../hooks/useFormData';
 import { uploadFormData } from '../../utils/uploadFormData';
+import { UserContext } from '../../context/userContext';
 
 
 const Formulario = () => {
     const { form, formData, updateFormData } = useFormData(null);
+    const { userData } = UserContext;
     const { _id } = useParams();
     //carga queries
     const {
@@ -23,15 +25,31 @@ const Formulario = () => {
 
     //carga mutaciones
     const [crearEmpresa, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_EMPRESA, { refetchQueries: [{ query: GET_EMPRESA }] });
-    const [nuevaEmpresa, { data: mutationNewData, loading: mutationNewLoading, error: mutationNewError }] = useMutation(CREAR_EMPRESA);
+
+    const [cargarImagen, { data: dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(CARGAR_IMAGEN);
 
     const [openDialog, setOpenDialog] = useState(false);
     //método del form
+
+    useEffect(() => {
+        console.log(dataMutation)
+    }, [dataMutation]);
     const submitForm = async (e) => {
         e.preventDefault();
-        console.log("antes de subir",formData);
+        console.log("antes de subir", formData);
         const formUploaded = await uploadFormData(formData);
-        console.log("subido",formUploaded);
+        console.log("subido", formUploaded);
+
+
+        console.log("DATOS USERDATA", formData);
+        cargarImagen({
+
+            variables: {
+                _id, ...formData
+            },
+
+        });
+
 
         // await
         //     crearEmpresa({
@@ -41,13 +59,13 @@ const Formulario = () => {
     };
 
     useEffect(() => {
-        if (mutationData) {
+        if (dataMutation) {
             console.log("Empresa modificada");
         }
-    }, [mutationData]);
+    }, [dataMutation]);
 
     useEffect(() => {
-        console.log('data mutation', mutationData);
+        console.log('data mutation', dataMutation);
     });
 
     if (queryLoading) return <div>...loading</div>
@@ -102,7 +120,7 @@ const Formulario = () => {
                                 <i className="fa fa-paperclip text-indigo-900 pr-2"></i>Ver archivos adjuntos</button>
                             <ButtonLoading
                                 text='Editar empresa'
-                                loading={mutationLoading}
+                                loading={loadingMutation}
                                 disabled={Object.keys(formData).length === 0} />
                             <div className=' mx-2 flex items-center justify-center text-center'>
                                 <Button className='bg-gray-700 text-black'>atras</Button>
